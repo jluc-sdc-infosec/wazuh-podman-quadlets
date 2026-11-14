@@ -1,6 +1,7 @@
 # wazuh-podman-quadlets
 
-Hardware:
+Host OS: openSUSE Leap 16.1, managed remotely via Tailscale SSH and Cockpit.
+Host Specs: Headless HP Pavilion 15 Notebook PC (Intel Core i7-5500U @ 2.40GHz, 12GB RAM, 240GB storage).
 
 ## Steps:
 
