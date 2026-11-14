@@ -1,3 +1,4 @@
+
 # wazuh-podman-quadlets
 
 - Host OS: openSUSE Leap 16.1, managed remotely via Tailscale SSH and Cockpit.
@@ -13,6 +14,6 @@ vm.max_map_count from 65530 default to 262144 to prevent it from crashing
 echo "vm.max_map_count=262144" | sudo tee /etc/sysctl.d/99-wazuh.conf
 sudo sysctl -p /etc/sysctl.d/99-wazuh.conf
 ```
-
+<img width="553" height="80" alt="screenshot_20261114_233227-annotated" src="https://github.com/user-attachments/assets/0227a65b-9e40-446d-9919-9905407a7d28" />
 
 
