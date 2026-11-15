@@ -1,5 +1,5 @@
 
-|No.| What Broke / Error  | Why It Happened  | How I Fixed It|
+|No.| Issue / Error  | Cause  | Fix|
 |:---------- | :------------------ | :--------------- | :------------ |
 | 1. | `Error: statfs /opt/wazuh/wazuh-docker/single-node/config/wazuh_indexer_ssl_certs: no such file or directory` | `podman run` expects the host folder to already exist before mounting it into the container. | Made the folder first using `sudo mkdir -p /opt/wazuh/wazuh-docker/single-node/config/wazuh_indexer_ssl_certs`. |
 | 2. | `Checking https://wazuh.com ... certificates were not created` | Leaving `CERT_TOOL_VERSION` blank broke the download URL, and putting `4.14.10` failed because Wazuh only lists major/minor versions (`4.14`). | Added `-e CERT_TOOL_VERSION=4.14` to the command using `wazuh-certs-generator:0.0.5`.|
