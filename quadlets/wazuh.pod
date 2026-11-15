@@ -1,4 +1,4 @@
-```ini
+
 [Unit]
 Description=Wazuh Pod
 
@@ -15,4 +15,3 @@ AddHost=wazuh.dashboard:127.0.0.1
 
 [Install]
 WantedBy=multi-user.target
-```
