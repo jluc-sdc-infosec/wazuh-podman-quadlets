@@ -52,4 +52,4 @@ sudo podman run --rm \
 # give read permissions to the config folder so the containers can access the certs
 sudo chmod -R a+rX /opt/wazuh/wazuh-docker/single-node/config/
 ```
-[Quadlets](  )
+[Quadlets](./quadlets)
