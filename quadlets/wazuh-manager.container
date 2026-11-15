@@ -1,4 +1,4 @@
-```ini
+
 [Unit]
 Description=Wazuh Manager
 After=wazuh-indexer.service
@@ -36,4 +36,4 @@ Volume=/opt/wazuh/wazuh-docker/single-node/config/wazuh_cluster/wazuh_manager.co
 
 [Install]
 WantedBy=multi-user.target
-```
+
