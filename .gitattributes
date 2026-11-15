@@ -1,0 +1,2 @@
+*.pod linguist-language=INI
+*.container linguist-language=INI
