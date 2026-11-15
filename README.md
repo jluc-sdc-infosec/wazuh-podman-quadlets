@@ -3,7 +3,7 @@
 
 ## Table of Contents
 - [Steps](#steps-on-installing)
-- [Troubleshooting](./troubleshooting.md )
+- [Troubleshooting](Troubleshooting.md )
 - [Quadlets](./quadlets )
 
 ## Homelab Architecture
