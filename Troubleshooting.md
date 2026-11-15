@@ -44,8 +44,11 @@ The guy is a tool—helpful "sometimes", I guess, most of the time—so instead 
 ```bash
 grep -E "volumes:|certs/|opensearch|wazuh.yml" -A 15 /opt/wazuh/wazuh-docker/single-node/docker-compose.yml
 ```
-<img width="1162" height="757" alt="1" src="https://github.com/user-attachments/assets/875d688d-e9ad-4329-a24a-317e919ac899" />
-<img width="1061" height="779" alt="2" src="https://github.com/user-attachments/assets/f8b50dd6-0928-4df2-bb69-50c3b95ed5cc" />
+
+<img width="1162" height="757" alt="screenshot_20261115_205420-annotated" src="https://github.com/user-attachments/assets/58cc88f6-3fb6-4c9d-adac-6659b15c25c6" />
+<img width="1061" height="779" alt="screenshot_20261115_205540-annotated" src="https://github.com/user-attachments/assets/f7684cf3-4659-4fdb-bc13-aa9cafb1bed8" />
+
+
 
 
 Checking the files directly showed the volume mounts were fine—the real problem was that `wazuh.indexer.yml` was owned by `root` with restricted permissions, so the non-root user inside the indexer container couldn't read it and fell back to its built-in demo certificate (`CN=demo.indexer`).
