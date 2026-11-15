@@ -2,13 +2,12 @@
 |No.| What Broke / Error  | Why It Happened  | How I Fixed It|
 |:---------- | :------------------ | :--------------- | :------------ |
 | 1. | `Error: statfs /opt/wazuh/wazuh-docker/single-node/config/wazuh_indexer_ssl_certs: no such file or directory` | `podman run` expects the host folder to already exist before mounting it into the container. | Made the folder first using `sudo mkdir -p /opt/wazuh/wazuh-docker/single-node/config/wazuh_indexer_ssl_certs`. |
-| 2. | `Checking https://wazuh.com ... certificates were not created` | Leaving `CERT_TOOL_VERSION` blank broke the download URL, and putting `4.14.10` failed because Wazuh only lists major/minor versions (`4.14`). | Added `-e CERT_TOOL_VERSION=4.14` to the command using `wazuh-certs-generator:0.0.5`.|
-| 3. | SELinux permission errors on shared SSL certificates (`:Z` vs `:z`)|Uppercase `:Z` locks a mounted file to *one* container only, so the indexer, manager, and dashboard locked each other out of the shared root CA certs.|Used lowercase `:z` on the shared SSL cert mounts so all three containers can read them, and kept uppercase `:Z` only on single-container config files.|
-| 4. |`Wazuh dashboard server is not ready yet` & `unable to verify the first certificate` (`CN=demo.indexer`)|`wazuh.indexer.yml` was locked to `root` only, so the non-root user inside the indexer container couldn't read it and fell back to its built-in demo cert.| Opened up read permissions on the config folder (`sudo chmod -R a+rX /opt/wazuh/wazuh-docker/single-node/config/`) and restarted `wazuh-indexer.service`. |
+| [2.](2.) | `Checking https://wazuh.com ... certificates were not created` | Leaving `CERT_TOOL_VERSION` blank broke the download URL, and putting `4.14.10` failed because Wazuh only lists major/minor versions (`4.14`). | Added `-e CERT_TOOL_VERSION=4.14` to the command using `wazuh-certs-generator:0.0.5`.|
+| [3.](3.) | SELinux permission errors on shared SSL certificates (`:Z` vs `:z`)|Uppercase `:Z` locks a mounted file to *one* container only, so the indexer, manager, and dashboard locked each other out of the shared root CA certs.|Used lowercase `:z` on the shared SSL cert mounts so all three containers can read them, and kept uppercase `:Z` only on single-container config files.|
+| [4.](4.) |`Wazuh dashboard server is not ready yet` & `unable to verify the first certificate` (`CN=demo.indexer`)|`wazuh.indexer.yml` was locked to `root` only, so the non-root user inside the indexer container couldn't read it and fell back to its built-in demo cert.| Opened up read permissions on the config folder (`sudo chmod -R a+rX /opt/wazuh/wazuh-docker/single-node/config/`) and restarted `wazuh-indexer.service`. |
 
 
-## 
-**2.** 
+## **2.** 
 ```bash
 sudo podman run --rm \
 -e CERT_TOOL_VERSION=4.14 \
@@ -26,6 +25,9 @@ docker.io/wazuh/wazuh-certs-generator:0.0.5
 
   ###  - Checked Container Logs
 The dashboard refused to load with `Wazuh dashboard server is not ready yet`, so I checked both container logs to see what was failing:
+
+<img width="655" height="333" alt="screenshot_20261115_191059-annotated" src="https://github.com/user-attachments/assets/0948305d-2b0f-4b2e-be8f-d767b55970e0" />
+
 ```bash
 sudo podman logs --tail 30 wazuh.indexer
 sudo podman logs --tail 20 wazuh.dashboard
