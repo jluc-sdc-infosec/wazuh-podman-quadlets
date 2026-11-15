@@ -3,8 +3,8 @@
 
 ## Table of Contents
 - [Steps](#steps-on-installing)
-- [Troubleshooting]( )
-- [Quadlets]( )
+- [Troubleshooting](./ )
+- [Quadlets](./quadlets )
 
 ## Homelab Architecture
 - Core Service: Wazuh SIEM stack (Indexer, Manager, Dashboard) deployed as Rootful containers managed via Podman Quadlets (`systemd`).
