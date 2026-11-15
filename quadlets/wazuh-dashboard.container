@@ -1,0 +1,27 @@
+```ini
+[Unit]
+Description=Wazuh Dashboard
+After=wazuh-manager.service
+
+[Container]
+Image=docker.io/wazuh/wazuh-dashboard:4.14.10
+ContainerName=wazuh.dashboard
+Pod=wazuh.pod
+Environment=INDEXER_USERNAME=admin
+Environment=INDEXER_PASSWORD=SecretPassword
+Environment=WAZUH_API_URL=https://wazuh.manager
+Environment=DASHBOARD_USERNAME=kibanaserver
+Environment=DASHBOARD_PASSWORD=kibanaserver
+Environment=API_USERNAME=wazuh-wui
+Environment=API_PASSWORD=MyS3cr37P450r.*-
+Volume=/opt/wazuh/wazuh-docker/single-node/config/wazuh_indexer_ssl_certs/wazuh.dashboard.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard.pem:z
+Volume=/opt/wazuh/wazuh-docker/single-node/config/wazuh_indexer_ssl_certs/wazuh.dashboard-key.pem:/usr/share/wazuh-dashboard/certs/wazuh-dashboard-key.pem:z
+Volume=/opt/wazuh/wazuh-docker/single-node/config/wazuh_indexer_ssl_certs/root-ca.pem:/usr/share/wazuh-dashboard/certs/root-ca.pem:z
+Volume=/opt/wazuh/wazuh-docker/single-node/config/wazuh_dashboard/opensearch_dashboards.yml:/usr/share/wazuh-dashboard/config/opensearch_dashboards.yml:Z
+Volume=/opt/wazuh/wazuh-docker/single-node/config/wazuh_dashboard/wazuh.yml:/usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml:Z
+Volume=wazuh-dashboard-config:/usr/share/wazuh-dashboard/data/wazuh/config
+Volume=wazuh-dashboard-custom:/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom
+
+[Install]
+WantedBy=multi-user.target
+```
