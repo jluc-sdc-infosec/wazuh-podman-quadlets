@@ -1,4 +1,4 @@
-```ini
+
 [Unit]
 Description=Wazuh Dashboard
 After=wazuh-manager.service
@@ -24,4 +24,4 @@ Volume=wazuh-dashboard-custom:/usr/share/wazuh-dashboard/plugins/wazuh/public/as
 
 [Install]
 WantedBy=multi-user.target
-```
+
