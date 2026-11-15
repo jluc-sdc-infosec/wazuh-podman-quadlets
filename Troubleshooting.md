@@ -38,7 +38,7 @@ sudo podman logs --tail 20 wazuh.dashboard
 The raw `wazuh.indexer` and `wazuh.dashboard` logs were noisy, so I pulled the error lines and used an AI tool to help parse them. Scolded the AI for hallucinating and pointing me towards `/config/certs/` paths and `securityadmin.sh` commands. 
 <img width="611" height="314" alt="2026-11-15-014638_hyprshot" src="https://github.com/user-attachments/assets/b9dfb44d-94ef-4772-b734-ebc4aef9a2f9" />
 
-The guy is a tool—helpful "sometimes", I guess, most of the time—so instead of taking its word for it, I had to manually check the actual `docker-compose.yml` and `wazuh-indexer.container` mount paths myself:
+The guy is a tool—helpful "sometimes", I guess, most of the time—but still, I had to manually check the actual `docker-compose.yml` and `wazuh-indexer.container` mount paths myself:
 
 
 ```bash
