@@ -1,4 +1,3 @@
-
 # wazuh-podman-quadlets
 
 ## Table of Contents
@@ -15,8 +14,8 @@
 ## Steps on installing
 
 **Note**: First time installing this kind of program no less on Open Suse which has very little documentation for it compared to Ubuntu.
-and from what i found, and how i understood it, i need to increase its 
-``vm.max_map_count`` from 65530 default to 262144 to prevent OpenSearch (wazuh.indexer) from crashing
+From what i found, and how i understood it, i need to increase its 
+`vm.max_map_count` from 65530 default to 262144 to prevent OpenSearch (wazuh.indexer) from crashing
 ```bash
 echo "vm.max_map_count=262144" | sudo tee /etc/sysctl.d/99-wazuh.conf
 sudo sysctl -p /etc/sysctl.d/99-wazuh.conf
@@ -52,4 +51,24 @@ sudo podman run --rm \
 # give read permissions to the config folder so the containers can access the certs
 sudo chmod -R a+rX /opt/wazuh/wazuh-docker/single-node/config/
 ```
-[Quadlets](./quadlets)
+
+### [Quadlets](./quadlets)
+- [wazuh-pod](quadlets/wazuh.pod)
+- [wazuh-dashboard](./quadlets/wazuh-dashboard.container)
+- [wazuh-indexer](./quadlets/wazuh-indexer.container)
+- [wazuh-manager](./quadlets/wazuh-manager.container)
+
+### Start & Verify the Stack
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now wazuh-pod.service
+sudo systemctl enable --now wazuh-indexer.service wazuh-manager.service wazuh-dashboard.service
+sudo podman ps
+```
+Wait ~30–60 seconds on first boot for the indexer to finish initializing.
+
+Check `https://192.168.0.198` if Wazuh dashboard is working.
+
+
+
+
