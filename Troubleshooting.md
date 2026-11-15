@@ -24,16 +24,14 @@ docker.io/wazuh/wazuh-certs-generator:0.0.5
 
 **4.**
 
-### #3 — `Wazuh dashboard server is not ready yet` (`CN=demo.indexer`)
-
-#### 1. Checked Container Logs
+  -  Checked Container Logs
 The dashboard refused to load with `Wazuh dashboard server is not ready yet`, so I checked both container logs to see what was failing:
 ```bash
 sudo podman logs --tail 30 wazuh.indexer
 sudo podman logs --tail 20 wazuh.dashboard
 ```
 
-#### 2. Isolated the Root Cause
+  - Isolated the Root Cause
 
 The raw `wazuh.indexer` and `wazuh.dashboard` logs were noisy, so I pulled the error lines and used an AI tool to help parse them. Scolded the AI for hallucinating and pointing me towards `/config/certs/` paths and `securityadmin.sh` commands. 
 <img width="611" height="314" alt="2026-11-15-014638_hyprshot" src="https://github.com/user-attachments/assets/b9dfb44d-94ef-4772-b734-ebc4aef9a2f9" />
@@ -53,7 +51,7 @@ grep -E "volumes:|certs/|opensearch|wazuh.yml" -A 15 /opt/wazuh/wazuh-docker/sin
 
 Checking the files directly showed the volume mounts were fine—the real problem was that `wazuh.indexer.yml` was owned by `root` with restricted permissions, so the non-root user inside the indexer container couldn't read it and fell back to its built-in demo certificate (`CN=demo.indexer`).
 
-#### 3. Applied the Real Fix
+  - Applied the Real Fix
 I opened up read/execute permissions on the config directory and restarted the indexer service:
 ```bash
 sudo chmod -R a+rX /opt/wazuh/wazuh-docker/single-node/config/
