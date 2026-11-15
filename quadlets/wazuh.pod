@@ -1,0 +1,16 @@
+[Unit]
+Description=Wazuh Pod
+
+[Pod]
+PodName=wazuh
+PublishPort=443:5601
+PublishPort=1514:1514
+PublishPort=1515:1515
+PublishPort=514:514/udp
+PublishPort=55000:55000
+AddHost=wazuh.indexer:127.0.0.1
+AddHost=wazuh.manager:127.0.0.1
+AddHost=wazuh.dashboard:127.0.0.1
+
+[Install]
+WantedBy=multi-user.target
