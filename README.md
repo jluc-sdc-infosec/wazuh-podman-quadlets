@@ -2,8 +2,8 @@
 
 ## Table of Contents
 - [Steps](#steps-on-installing)
-- [Troubleshooting](Troubleshooting.md )
-- [Quadlets](./quadlets )
+- [Troubleshooting](Troubleshooting.md)
+- [Quadlets](./quadlets)
 
 ## Homelab Architecture
 - Core Service: Wazuh SIEM stack (Indexer, Manager, Dashboard) deployed as Rootful containers managed via Podman Quadlets (`systemd`).
@@ -58,6 +58,22 @@ sudo chmod -R a+rX /opt/wazuh/wazuh-docker/single-node/config/
 - [wazuh-indexer](./quadlets/wazuh-indexer.container)
 - [wazuh-manager](./quadlets/wazuh-manager.container)
 
+
+### Configure Host Firewall (`firewalld`)
+
+`tailscale0` was already set to `trusted` during Tailscale setup. On `eno1`, I stripped SSH and Cockpit and only exposed the Wazuh dashboard (`443/tcp`) and Pi-hole DNS (`53`), keeping Wazuh agent traffic (`1514`/`1515`) strictly on Tailscale.
+
+```bash
+sudo firewall-cmd --zone=public --remove-service=ssh --permanent
+sudo firewall-cmd --zone=public --remove-service=cockpit --permanent
+sudo firewall-cmd --zone=public --add-port=443/tcp --permanent
+sudo firewall-cmd --zone=public --add-service=dns --permanent
+sudo firewall-cmd --reload
+```
+
+<img width="1584" height="566" alt="screenshot_20261116_220036-annotated" src="https://github.com/user-attachments/assets/a09c3ec9-eceb-4d05-8e46-25120a909b5c" />
+
+
 ### Start & Verify the Stack
 ```bash
 sudo systemctl daemon-reload
@@ -65,7 +81,7 @@ sudo systemctl enable --now wazuh-pod.service
 sudo systemctl enable --now wazuh-indexer.service wazuh-manager.service wazuh-dashboard.service
 sudo podman ps
 ```
-Wait ~30–60 seconds on first boot for the indexer to finish initializing.
+Wait a few seconds on first boot for the indexer to finish initializing.
 
 Check `https://192.168.0.198` if Wazuh dashboard is working.
 
