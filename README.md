@@ -1,4 +1,5 @@
 # wazuh-podman-quadlets
+Single-node Wazuh SIEM home lab deployed on openSUSE Leap 16.1 using rootful Podman Quadlets, with firewalld and Tailscale for network isolation.
 
 ## Table of Contents
 - [Steps](#steps-on-installing)
