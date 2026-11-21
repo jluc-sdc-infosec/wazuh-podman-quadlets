@@ -66,7 +66,8 @@ sudo systemctl restart wazuh-indexer.service
 
 ## **5.**
 
-<img width="1743" height="901" alt="screenshot_20261121_184333-annotated" src="https://github.com/user-attachments/assets/0ec3e467-dc07-4de7-a9eb-51d8db42d684" />
+<img width="1740" height="879" alt="screenshot_20261121_185227-annotated" src="https://github.com/user-attachments/assets/0022a621-b707-4af0-8769-0c96c88e8d5b" />
+
 
 
 ```bash
