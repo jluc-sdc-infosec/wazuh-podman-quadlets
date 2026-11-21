@@ -5,6 +5,10 @@
 | 2. | `Checking https://wazuh.com ... certificates were not created` | Leaving `CERT_TOOL_VERSION` blank broke the download URL, and putting `4.14.10` failed because Wazuh only lists major/minor versions (`4.14`). | Added `-e CERT_TOOL_VERSION=4.14` to the command using `wazuh-certs-generator:0.0.5`.|
 | 3. | SELinux permission errors on shared SSL certificates (`:Z` vs `:z`)|Uppercase `:Z` locks a mounted file to *one* container only, so the indexer, manager, and dashboard locked each other out of the shared root CA certs.|Used lowercase `:z` on the shared SSL cert mounts so all three containers can read them, and kept uppercase `:Z` only on single-container config files.|
 | 4. |`Wazuh dashboard server is not ready yet` & `unable to verify the first certificate` (`CN=demo.indexer`)|`wazuh.indexer.yml` was locked to `root` only, so the non-root user inside the indexer container couldn't read it and fell back to its built-in demo cert.| Opened up read permissions on the config folder (`sudo chmod -R a+rX /opt/wazuh/wazuh-docker/single-node/config/`) and restarted `wazuh-indexer.service`. |
+| 5. |`Wazuh dashboard 3021-Error setting configuration: EACCESS: permission denied` on `wazuh.yml` | *Saving server settings `remember server address` in the Wazuh Dashboard for deploying agents.  The container service runs as user `1000`, but the mounted folder on openSUSE was owned by root. | Changed the folder ownership to `1000:1000` so wazuh could write to its own config file, and tightened the permissions so folders get 750 and files get 640, blocking other users from reading the config file.
+|
+
+
 
 
 ## **2.** 
@@ -58,5 +62,15 @@ I opened up read/execute permissions on the config directory and restarted the i
 ```bash
 sudo chmod -R a+rX /opt/wazuh/wazuh-docker/single-node/config/
 sudo systemctl restart wazuh-indexer.service
+```
+
+## **5.**
+
+<img width="1743" height="901" alt="screenshot_20261121_184333-annotated" src="https://github.com/user-attachments/assets/0ec3e467-dc07-4de7-a9eb-51d8db42d684" />
+
+
+```bash
+sudo podman exec -u 0 wazuh.dashboard chown -R 1000:1000 /usr/share/wazuh-dashboard/data
+sudo podman exec -u 0 wazuh.dashboard chmod -R u=rwX,g=rX,o= /usr/share/wazuh-dashboard/data
 ```
 
