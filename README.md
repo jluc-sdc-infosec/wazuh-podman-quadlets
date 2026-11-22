@@ -17,6 +17,7 @@ Single-node Wazuh SIEM home lab deployed on openSUSE Leap 16.1 using rootful Pod
 **Note**: First time installing this kind of program no less on Open Suse which has very little documentation for it compared to Ubuntu.
 From what i found, and how i understood it, i need to increase its 
 `vm.max_map_count` from 65530 default to 262144 to prevent OpenSearch (wazuh.indexer) from crashing
+
 ```bash
 echo "vm.max_map_count=262144" | sudo tee /etc/sysctl.d/99-wazuh.conf
 sudo sysctl -p /etc/sysctl.d/99-wazuh.conf
